@@ -1,9 +1,10 @@
 ﻿using Application.Interfaces;
 using Application.Models.DTO.User;
-using Application.Service;
 using AutoMapper;
+using Domain;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Api.Controllers
 {
@@ -11,11 +12,13 @@ namespace Api.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserService _entityService;
+        private readonly IUnitofwork _unitofwork;
+        private readonly IMapper _mapper;
 
-        public UserController(IUserService entityService)
+        public UserController(IUnitofwork unitofwork,IMapper mapper)
         {
-            _entityService = entityService;
+            _unitofwork = unitofwork;
+            _mapper = mapper;
         }
 
         [HttpPost]
@@ -25,18 +28,23 @@ namespace Api.Controllers
             {
                 return BadRequest((400, "modelisnotvalid"));
             }
+            User node = _mapper.Map<User>(createReq);
 
-            await _entityService.AddAsync(createReq);
-
+            _unitofwork.User.Add(node);
+            bool issuccess = await _unitofwork.SaveChangesAsync();
+            if (!issuccess)
+                throw new Exception("Entity hasn't been updated.");
             return Created(string.Empty, "created");
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public IActionResult GetAll()
         {
-            List<GetReqUserDTO> responce = await _entityService.GetAllAsync();
+            IQueryable<User> responce = _unitofwork.User.GetAll();
 
-            return Ok(responce);
+            List<GetReqUserDTO> node = _mapper.Map<List<GetReqUserDTO>>(responce);
+
+            return Ok(node);
         }
 
         [HttpDelete("{id}")]
@@ -46,14 +54,27 @@ namespace Api.Controllers
             if (id <= 0)
                 return BadRequest("Id is not true");
 
-            await _entityService.DeleteAsync(id);
+            User? user = await _unitofwork.User.GetByIdStrictAsync(id);
+
+            if (user == null)
+                throw new Exception("entity is not defined");
+
+            _unitofwork.User.Remove(user);
+            bool issuccess = await _unitofwork.SaveChangesAsync();
+            if (!issuccess)
+                throw new Exception("Entity hasn't been updated.");
             return NoContent();
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(UpdateUserDTO user) 
         {
-            await _entityService.UpdateAsync(user);
+            User node = _mapper.Map<User>(user);
+
+             _unitofwork.User.Update(node);
+            bool issuccess = await _unitofwork.SaveChangesAsync();
+            if (!issuccess)
+                throw new Exception("Entity hasn't been updated.");
             return Ok();
         }
         

@@ -3,7 +3,6 @@ using Application;
 using Infastructure;
 using Application.Interfaces;
 using Application.Repository;
-using Application.Service;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,7 +14,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddTransient<IUnitofwork, Unitofwork>();
 builder.Services.AddScoped<IUserRepo, UserRepo>();
 builder.Configuration.AddEnvironmentVariables();
 builder.Services.AddApplication();
