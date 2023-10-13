@@ -19,15 +19,15 @@ namespace Application.Repository
 
         
 
-        public void Add(T entity)
+        public async Task Add(T entity)
         {
             _dbContext.Set<T>().Add(entity);
         } 
 
 
-        public IQueryable<T> GetAll()
+        public async Task<IQueryable<T>> GetAll()
         {
-            IQueryable<T> entitiesQuery = _dbContext.Set<T>()
+            IQueryable<T> entitiesQuery =  _dbContext.Set<T>()
                .AsQueryable();
 
             return entitiesQuery;
@@ -41,9 +41,9 @@ namespace Application.Repository
             return entity;
         }
 
-        public void Remove(T entity) => _dbContext.Set<T>().Remove(entity);
+        public async Task Remove(T entity) =>  _dbContext.Set<T>().Remove(entity);
 
-        public void Update(T entity)=> _dbContext.Set<T>().Update(entity);
+        public async Task Update(T entity) {  _dbContext.Set<T>().Update(entity); }
 
     }
 }

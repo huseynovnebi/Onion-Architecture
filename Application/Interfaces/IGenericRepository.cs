@@ -9,14 +9,14 @@ namespace Application.Interfaces
 {
     public interface IGenericRepository<T> where T:class
     {
-        void Add(T entity);
+        Task Add(T entity);
 
-        IQueryable<T> GetAll();
+        Task<IQueryable<T>> GetAll();
         //Task<bool> SaveChangesAsync();
 
         Task<T?> GetByIdStrictAsync(int entityId);
-        void Remove(T entity);
+        Task Remove(T entity);
 
-        void Update(T entity);
+        Task Update(T entity);
     }
 }

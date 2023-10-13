@@ -30,7 +30,7 @@ namespace Api.Controllers
             }
             User node = _mapper.Map<User>(createReq);
 
-            _unitofwork.User.Add(node);
+           await _unitofwork.User.Add(node);
             bool issuccess = await _unitofwork.SaveChangesAsync();
             if (!issuccess)
                 throw new Exception("Entity hasn't been updated.");
@@ -38,9 +38,9 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            IQueryable<User> responce = _unitofwork.User.GetAll();
+            IQueryable<User> responce = await _unitofwork.User.GetAll();
 
             List<GetReqUserDTO> node = _mapper.Map<List<GetReqUserDTO>>(responce);
 
@@ -59,7 +59,7 @@ namespace Api.Controllers
             if (user == null)
                 throw new Exception("entity is not defined");
 
-            _unitofwork.User.Remove(user);
+            await _unitofwork.User.Remove(user);
             bool issuccess = await _unitofwork.SaveChangesAsync();
             if (!issuccess)
                 throw new Exception("Entity hasn't been updated.");
@@ -71,7 +71,7 @@ namespace Api.Controllers
         {
             User node = _mapper.Map<User>(user);
 
-             _unitofwork.User.Update(node);
+             await _unitofwork.User.Update(node);
             bool issuccess = await _unitofwork.SaveChangesAsync();
             if (!issuccess)
                 throw new Exception("Entity hasn't been updated.");
