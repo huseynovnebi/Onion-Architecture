@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Infastructure;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
@@ -21,14 +22,13 @@ namespace Application.Repository
 
         public async Task Add(T entity)
         {
-            _dbContext.Set<T>().Add(entity);
+            await _dbContext.Set<T>().AddAsync(entity);
         } 
 
 
-        public async Task<IQueryable<T>> GetAll()
+        public async Task<List<T>> GetAll()
         {
-            IQueryable<T> entitiesQuery =  _dbContext.Set<T>()
-               .AsQueryable();
+            List<T> entitiesQuery = await _dbContext.Set<T>().AsNoTracking().ToListAsync();
 
             return entitiesQuery;
         }
@@ -41,9 +41,9 @@ namespace Application.Repository
             return entity;
         }
 
-        public async Task Remove(T entity) =>  _dbContext.Set<T>().Remove(entity);
+        public void Remove(T entity) { _dbContext.Set<T>().Remove(entity); }
 
-        public async Task Update(T entity) {  _dbContext.Set<T>().Update(entity); }
+        public void Update(T entity) {  _dbContext.Set<T>().Update(entity); }
 
     }
 }

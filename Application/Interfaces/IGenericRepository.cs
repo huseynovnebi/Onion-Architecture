@@ -11,12 +11,12 @@ namespace Application.Interfaces
     {
         Task Add(T entity);
 
-        Task<IQueryable<T>> GetAll();
+        Task<List<T>> GetAll();
         //Task<bool> SaveChangesAsync();
 
         Task<T?> GetByIdStrictAsync(int entityId);
-        Task Remove(T entity);
+        void Remove(T entity);
 
-        Task Update(T entity);
+        void Update(T entity);
     }
 }

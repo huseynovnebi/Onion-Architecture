@@ -14,7 +14,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddTransient<IUnitofwork, Unitofwork>();
+builder.Services.AddScoped<IUnitofwork, Unitofwork>();
+//addtransient addsingelton
 builder.Services.AddScoped<IUserRepo, UserRepo>();
 builder.Configuration.AddEnvironmentVariables();
 builder.Services.AddApplication();

@@ -22,6 +22,6 @@ namespace Application.Models.DTO.User
 
         [Column(TypeName = "nvarchar")]
         [MaxLength(10)]
-        public string Age { get; set; }
+        public int Age { get; set; }
     }
 }

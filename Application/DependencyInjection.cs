@@ -5,6 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using FluentValidation.AspNetCore;
+using FluentValidation;
+using System.Reflection;
 
 namespace Application
 {
@@ -17,6 +20,8 @@ namespace Application
                 // Add your AutoMapper profiles here
                 cfg.AddProfile<MapperProfiles>();
             });
+            services.AddFluentValidationAutoValidation();
+            services.AddValidatorsFromAssemblies(new[] { Assembly.GetExecutingAssembly() });
             return services;
         }
         }
