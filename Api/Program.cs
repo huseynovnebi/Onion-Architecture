@@ -4,6 +4,7 @@ using Infastructure;
 using Application.Interfaces;
 using Application.Repository;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUnitofwork, Unitofwork>();
 //addtransient addsingelton
 builder.Services.AddScoped<IUserRepo, UserRepo>();
+builder.Services.AddMemoryCache();
 builder.Configuration.AddEnvironmentVariables();
 builder.Services.AddApplication();
 builder.Services.AddDbContext<UsersDbContext>(options => options.UseSqlServer("Data Source=DESKTOP-O7KPC84\\MSSQLSERVER01;" +

@@ -28,9 +28,8 @@ namespace Application.Repository
 
         public async Task<List<T>> GetAll()
         {
-            List<T> entitiesQuery = await _dbContext.Set<T>().AsNoTracking().ToListAsync();
-
-            return entitiesQuery;
+                List<T> entitiesQuery = await _dbContext.Set<T>().ToListAsync();
+                return entitiesQuery;
         }
 
         public async Task<T?> GetByIdStrictAsync(int entityId)

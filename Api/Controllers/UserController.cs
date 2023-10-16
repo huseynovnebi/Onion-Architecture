@@ -5,6 +5,7 @@ using Domain;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Api.Controllers
 {
@@ -15,10 +16,13 @@ namespace Api.Controllers
         private readonly IUnitofwork _unitofwork;
         private readonly IMapper _mapper;
 
-        public UserController(IUnitofwork unitofwork,IMapper mapper)
+        private readonly IMemoryCache _memorycache;
+
+        public UserController(IUnitofwork unitofwork,IMapper mapper,IMemoryCache memorycache)
         {
             _unitofwork = unitofwork;
             _mapper = mapper;
+            _memorycache = memorycache;
         }
 
         [HttpPost]
@@ -40,9 +44,19 @@ namespace Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            List<User> responce = await _unitofwork.User.GetAll();
+            List<GetReqUserDTO> node;
+            if (!_memorycache.TryGetValue("AllUsers", out node))
+            {
+                List<User> responce = await _unitofwork.User.GetAll();
+                node = _mapper.Map<List<GetReqUserDTO>>(responce);
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+               .SetSlidingExpiration(TimeSpan.FromSeconds(45))
+               .SetAbsoluteExpiration(TimeSpan.FromSeconds(60))
+               .SetPriority(CacheItemPriority.Normal);
 
-            List<GetReqUserDTO> node = _mapper.Map<List<GetReqUserDTO>>(responce);
+                // Store the result in the cache with the configured options.
+                _memorycache.Set("AllUsers", node, cacheEntryOptions);
+            }
 
             return Ok(node);
         }
