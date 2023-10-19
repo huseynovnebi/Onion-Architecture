@@ -23,7 +23,7 @@ namespace UnitTest
             _fixture = new Fixture();
             _serviceMock = _fixture.Freeze<Mock<IUnitofwork>>();
             _serviceMock2 = _fixture.Freeze<Mock<IMapper>>();
-            _usercon = new UserController(_serviceMock.Object, _serviceMock2.Object);
+            //_usercon = new UserController(_serviceMock.Object, _serviceMock2.Object);
         }
         [SetUp]
         public void Setup()
@@ -38,7 +38,7 @@ namespace UnitTest
             {
                 Id = 1,
                 Name = "John",
-                Age = "30"
+                Age = 30
             };
             User node = _serviceMock2.Object.Map<User>(dto);
             _serviceMock.Setup(x => x.User.Add(node));

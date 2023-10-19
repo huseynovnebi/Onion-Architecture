@@ -44,6 +44,7 @@ namespace Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
+            //throw new Exception("hello user");
             List<GetReqUserDTO> node;
             if (!_memorycache.TryGetValue("AllUsers", out node))
             {

@@ -23,7 +23,7 @@ namespace UnitTest
             _fixture = new Fixture();
             _serviceMock = _fixture.Freeze<Mock<IUnitofwork>>();
             _serviceMock2 = _fixture.Freeze<Mock<IMapper>>();
-            _usercon = new UserController(_serviceMock.Object,_serviceMock2.Object);
+            //_usercon = new UserController(_serviceMock.Object,_serviceMock2.Object);
         }
         [SetUp]
         public void Setup()
