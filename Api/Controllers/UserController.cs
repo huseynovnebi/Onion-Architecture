@@ -30,15 +30,16 @@ namespace Api.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest((400, "modelisnotvalid"));
+                return BadRequest((400, "Request is not valid!"));
             }
             User node = _mapper.Map<User>(createReq);
 
             await _unitofwork.User.Add(node);
             bool issuccess = await _unitofwork.SaveChangesAsync();
             if (!issuccess)
-                throw new Exception("Entity hasn't been updated.");
-            return Created(string.Empty, "created");
+                return StatusCode(500, "Internal Server Error: Entity hasn't been updated.");
+
+            return Created(string.Empty, "Created");
         }
 
         [HttpGet]
@@ -67,34 +68,56 @@ namespace Api.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             if (id <= 0)
-                return BadRequest("Id is not true");
+                return BadRequest("User with the specified id is not true.");
 
             User? user = await _unitofwork.User.GetByIdStrictAsync(id);
 
             if (user == null)
-                throw new Exception("entity is not defined");
+                return NotFound("User with the specified id is not found.");
 
-             _unitofwork.User.Remove(user);
+            _unitofwork.User.Remove(user);
             bool issuccess = await _unitofwork.SaveChangesAsync();
+
             if (!issuccess)
-                throw new Exception("Entity hasn't been updated.");
-            return NoContent();
+            {
+                return StatusCode(500, "Internal Server Error: Entity hasn't been updated.");
+            }
+
+            return Ok("User with the specified id has been deleted.");
         }
+
+//        Accepted: If the deletion is a long-running operation and is accepted for processing but not completed yet, you can return an Accepted response.This informs the client that the request has been received and is being processed, but the deletion may not be immediate.
+//         return Accepted("Deletion request accepted and in progress.");
 
         [HttpPut("{id}")]
         //[HttpPut("{id:int:min(1)}")]
         public async Task<IActionResult> Update(int id,[FromBody] UpdateUserDTO user) 
         {
             if (id <= 0)
-                return BadRequest("Id is not true");
+            {
+                var errorResponse = new
+                {
+                    Error = "Bad Request",
+                    Message = "Id is not valid. It should be a positive integer."
+                };
+
+                return BadRequest(errorResponse);
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest((400, "Request is not valid!"));
+            }
             User node = _mapper.Map<User>(user);
 
               _unitofwork.User.Update(node);
 
             bool issuccess = await _unitofwork.SaveChangesAsync();
             if (!issuccess)
-                throw new Exception("Entity hasn't been updated.");
-            return Ok();
+                return new ObjectResult("Internal Server Error.An unexpected error occurred.")
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError
+                };
+            return Ok("User Updated!");
         }
         
     }
