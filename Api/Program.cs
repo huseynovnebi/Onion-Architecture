@@ -17,6 +17,10 @@ builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
+
+// Configure the App configuration (appsettings.json, user secrets, environment variables, etc.)
+
 //builder.Services.AddSwaggerGen(option =>
 //{
 
@@ -71,6 +75,7 @@ builder.Services.AddSwaggerGen(c =>
                     }
                 });
 });
+
 builder.Services.AddScoped<IUnitofwork, Unitofwork>();
 //addtransient addsingelton
 builder.Services.AddScoped<IUserRepo, UserRepo>();
@@ -83,7 +88,8 @@ builder.Services.AddDbContext<UsersDbContext>(options => options.UseSqlServer("D
 Log.Logger = new LoggerConfiguration().MinimumLevel.Information().WriteTo.File("logs/-",rollingInterval:RollingInterval.Day).CreateLogger();
 
 var app = builder.Build();
-
+var apiKey = app.Configuration["AuthLogin:UserName"];
+var logLevel = app.Configuration["AuthLogin:Password"];
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

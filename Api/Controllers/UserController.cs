@@ -24,7 +24,6 @@ namespace Api.Controllers
             _mapper = mapper;
             _memorycache = memorycache;
         }
-
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateReqUserDTO createReq)
         {
