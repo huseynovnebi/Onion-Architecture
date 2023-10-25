@@ -1,0 +1,30 @@
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJuZWJpIiwianRpIjoiZGI1NjI5OTMtYWY0OC00NzYwLWJhMDctODY5YzdiZWY5OTQ5IiwiZXhwIjoxNjk4MjY1NzIwLCJpc3MiOiJ5b3VyLWlzc3VlciIsImF1ZCI6InlvdXItaXNzdWVyIn0.wpCi7rYboBPvx7Wq3ttSvbtc90CVFRH8ys_c_sIcC84
+2023-10-25 23:32:04.343 +04:00 [INF] Request body:{
+  "userName": "nebi",
+  "password": "emanat123"
+}
+2023-10-25 23:32:04.657 +04:00 [INF] Response body:UnAuthorized
+2023-10-25 23:33:22.204 +04:00 [INF] Request body:{
+  "userName": "nebi",
+  "password": "emanat123"
+}
+2023-10-25 23:33:22.414 +04:00 [INF] Response body:UnAuthorized
+2023-10-25 23:34:02.527 +04:00 [INF] Request body:{
+  "userName": "nebi",
+  "password": "emanat123"
+}
+2023-10-25 23:34:02.734 +04:00 [INF] Response body:UnAuthorized
+2023-10-25 23:35:09.872 +04:00 [INF] Request body:{
+  "userName": "nebi",
+  "password": "emanat123"
+}
+2023-10-25 23:35:10.159 +04:00 [INF] Response body:UnAuthorizedhewllo
+2023-10-25 23:36:05.159 +04:00 [INF] Request body:{
+  "userName": "nebi",
+  "password": "emanat123"
+}
+2023-10-25 23:36:06.093 +04:00 [INF] Exception ocurred:IDX10653: The encryption algorithm 'HS256' requires a key size of at least '128' bits. Key '[PII of type 'Microsoft.IdentityModel.Tokens.SymmetricSecurityKey' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]', is of size: '120'. (Parameter 'key')
+2023-10-25 23:54:57.480 +04:00 [INF] Request body:{
+  "userName": "nebi",
+  "password": "emanat123
+2023-10-25 23:54:57.825 +04:00 [INF] Response body:{"type":"https://tools.ietf.org/html/rfc7231#section-6.5.1","title":"One or more validation errors occurred.","status":400,"traceId":"00-feb0449279e8d4698fcaeb73285ae4e0-df9d21ea63ee80cd-00","errors":{"loginAuth":["The loginAuth field is required."],"$.password":["Expected end of string, but instead reached end of data. Path: $.password | LineNumber: 2 | BytePositionInLine: 24."]}

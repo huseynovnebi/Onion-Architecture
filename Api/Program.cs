@@ -21,60 +21,60 @@ builder.Services.AddEndpointsApiExplorer();
 
 // Configure the App configuration (appsettings.json, user secrets, environment variables, etc.)
 
-//builder.Services.AddSwaggerGen(option =>
-//{
-
-//    option.SwaggerDoc("v1", new OpenApiInfo { Title = "Demo API", Version = "v1" });
-//    option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-//    {
-//        In = ParameterLocation.Header,
-//        Description = "Please enter a valid token",
-//        Name = "Authorization",
-//        Type = SecuritySchemeType.Http,
-//        BearerFormat = "JWT",
-//        Scheme = "Bearer"
-//    });
-//    option.AddSecurityRequirement(new OpenApiSecurityRequirement
-//    {
-//        {
-//            new OpenApiSecurityScheme
-//            {
-//                Reference = new OpenApiReference
-//                {
-//                    Type=ReferenceType.SecurityScheme,
-//                    Id="Bearer"
-//                }
-//            },
-//            new string[]{}
-//        }
-//    });
-//});
-builder.Services.AddSwaggerGen(c =>
+builder.Services.AddSwaggerGen(option =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "BasicAuth", Version = "v1" });
-    c.AddSecurityDefinition("basic", new OpenApiSecurityScheme
+
+    option.SwaggerDoc("v1", new OpenApiInfo { Title = "Demo API", Version = "v1" });
+    option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
+        In = ParameterLocation.Header,
+        Description = "Please enter a valid token",
         Name = "Authorization",
         Type = SecuritySchemeType.Http,
-        Scheme = "basic",
-        In = ParameterLocation.Header,
-        Description = "Basic Authorization header using the Bearer scheme."
+        BearerFormat = "JWT",
+        Scheme = "Bearer"
     });
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    option.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
                 {
-                    {
-                          new OpenApiSecurityScheme
-                            {
-                                Reference = new OpenApiReference
-                                {
-                                    Type = ReferenceType.SecurityScheme,
-                                    Id = "basic"
-                                }
-                            },
-                            new string[] {}
-                    }
-                });
+                    Type=ReferenceType.SecurityScheme,
+                    Id="Bearer"
+                }
+            },
+            new string[]{}
+        }
+    });
 });
+//builder.Services.AddSwaggerGen(c =>
+//{
+//    c.SwaggerDoc("v1", new OpenApiInfo { Title = "BasicAuth", Version = "v1" });
+//    c.AddSecurityDefinition("basic", new OpenApiSecurityScheme
+//    {
+//        Name = "Authorization",
+//        Type = SecuritySchemeType.Http,
+//        Scheme = "basic",
+//        In = ParameterLocation.Header,
+//        Description = "Basic Authorization header using the Bearer scheme."
+//    });
+//    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+//                {
+//                    {
+//                          new OpenApiSecurityScheme
+//                            {
+//                                Reference = new OpenApiReference
+//                                {
+//                                    Type = ReferenceType.SecurityScheme,
+//                                    Id = "basic"
+//                                }
+//                            },
+//                            new string[] {}
+//                    }
+//                });
+//});
 
 builder.Services.AddScoped<IUnitofwork, Unitofwork>();
 //addtransient addsingelton

@@ -15,6 +15,7 @@ namespace Api.Controllers
         {
             this.configuration = configuration;
         }
+        
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginAuth loginAuth)
         {
@@ -26,7 +27,7 @@ namespace Api.Controllers
             var UserName = configuration["AuthLogin:UserName"];
             var Password = configuration["AuthLogin:Password"];
 
-            if (loginAuth.UserName.Equals(UserName) || loginAuth.Password.Equals(Password))
+            if (!loginAuth.UserName.Equals(UserName) || !loginAuth.Password.Equals(Password))
             {
                 return Unauthorized("UnAuthorized");
 
