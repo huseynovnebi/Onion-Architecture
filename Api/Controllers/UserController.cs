@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Caching.Memory;
+using Newtonsoft.Json;
 
 namespace Api.Controllers
 {
@@ -24,13 +25,12 @@ namespace Api.Controllers
             _mapper = mapper;
             _memorycache = memorycache;
         }
+
+        [Route("api/[controller]/CreateUser")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateReqUserDTO createReq)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest((400, "Request is not valid!"));
-            }
+          
             User node = _mapper.Map<User>(createReq);
 
             await _unitofwork.User.Add(node);
@@ -41,15 +41,16 @@ namespace Api.Controllers
             return Created(string.Empty, "Created");
         }
 
+        [Route("api/[controller]/GetAllUsers")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            //throw new Exception("hello user");
             List<GetReqUserDTO> node;
             if (!_memorycache.TryGetValue("AllUsers", out node))
             {
                 List<User> responce = await _unitofwork.User.GetAll();
                 node = _mapper.Map<List<GetReqUserDTO>>(responce);
+
                 var cacheEntryOptions = new MemoryCacheEntryOptions()
                .SetSlidingExpiration(TimeSpan.FromSeconds(45))
                .SetAbsoluteExpiration(TimeSpan.FromSeconds(60))
@@ -58,11 +59,13 @@ namespace Api.Controllers
                 // Store the result in the cache with the configured options.
                 _memorycache.Set("AllUsers", node, cacheEntryOptions);
             }
+            Response.ContentType = "application/json";
 
             return Ok(node);
         }
 
-        [HttpDelete("{id}")]
+        [Route("api/[controller]/DeleteUser")]
+        [HttpDelete]
 
         public async Task<IActionResult> Delete(int id)
         {
@@ -85,27 +88,25 @@ namespace Api.Controllers
             return Ok("User with the specified id has been deleted.");
         }
 
-//        Accepted: If the deletion is a long-running operation and is accepted for processing but not completed yet, you can return an Accepted response.This informs the client that the request has been received and is being processed, but the deletion may not be immediate.
-//         return Accepted("Deletion request accepted and in progress.");
+        //        Accepted: If the deletion is a long-running operation and is accepted for processing but not completed yet, you can return an Accepted response.This informs the client that the request has been received and is being processed, but the deletion may not be immediate.
+        //         return Accepted("Deletion request accepted and in progress.");
 
-        [HttpPut("{id}")]
+        [Route("api/[controller]/UpdateUser")]
+        [HttpPut]
         //[HttpPut("{id:int:min(1)}")]
         public async Task<IActionResult> Update(int id,[FromBody] UpdateUserDTO user) 
         {
-            if (id <= 0)
+            if (id <= 0 || id != user.Id)
             {
                 var errorResponse = new
                 {
                     Error = "Bad Request",
-                    Message = "Id is not valid. It should be a positive integer."
+                    Message = "Id is not valid."
                 };
 
                 return BadRequest(errorResponse);
             }
-            if (!ModelState.IsValid)
-            {
-                return BadRequest((400, "Request is not valid!"));
-            }
+          
             User node = _mapper.Map<User>(user);
 
               _unitofwork.User.Update(node);

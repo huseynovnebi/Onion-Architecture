@@ -11,8 +11,8 @@ namespace Application.Models.DTO.User
     public class CreateReqUserDTO
     {
         
-        [Column(TypeName = "number")]
-        public int Id { get; set; }
+        //[Column(TypeName = "number")]
+        //public int Id { get; set; }
 
      
         [Column(TypeName = "nvarchar")]

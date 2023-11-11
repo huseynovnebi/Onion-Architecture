@@ -27,7 +27,8 @@ namespace Application.JWTToken
             var claims = new[]
             {
         new Claim(JwtRegisteredClaimNames.Sub, userName),
-        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+        new Claim(JwtRegisteredClaimNames.Exp, DateTimeOffset.UtcNow.AddMinutes(int.Parse(_configuration["Jwt:ExpirationMinutes"])).ToUnixTimeSeconds().ToString()) // Set the token expiration time
     };
 
             var token = new JwtSecurityToken(

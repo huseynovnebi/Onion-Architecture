@@ -10,8 +10,8 @@ namespace Domain
 {
     public class User
     {
-        [Column(TypeName="number")]
-        
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Column(TypeName = "nvarchar")]

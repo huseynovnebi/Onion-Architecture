@@ -7,6 +7,7 @@ using Infastructure;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Application.Interfaces.Auth;
 
 namespace Application.Repository
 {
@@ -17,8 +18,10 @@ namespace Application.Repository
         {
             _dbContext = dbContext;
             User = new UserRepo(_dbContext);
+            authRepo = new AuthRepo(_dbContext);
         }
         public IUserRepo User { get; private set; }
+        public IAuthRepo authRepo { get; private set; }
 
         public void Dispose() { 
 

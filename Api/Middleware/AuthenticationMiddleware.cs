@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 
 namespace Api.Middleware
 {
@@ -52,6 +53,22 @@ namespace Api.Middleware
                 context.Response.StatusCode = 401;
                 await context.Response.WriteAsync("UnAuthorized");
                 return;
+            }
+            else
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                
+
+                if (tokenHandler.CanReadToken(browsertoken))
+                {
+                    var securityToken = new JwtSecurityToken(browsertoken);
+                    if (securityToken.ValidTo < DateTime.UtcNow)
+                    {
+                        context.Response.StatusCode = 401;
+                        await context.Response.WriteAsync("Token has expired.");
+                        return;
+                    }
+                }
             }
             await next.Invoke(context);
         }
