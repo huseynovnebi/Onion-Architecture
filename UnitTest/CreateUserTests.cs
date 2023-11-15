@@ -47,7 +47,6 @@ namespace UnitTest
             // Arrange
             CreateReqUserDTO dto = new CreateReqUserDTO
             {
-                Id = 1,
                 Name = "John",
                 Age = 10
             };
@@ -82,7 +81,6 @@ namespace UnitTest
             //Arrange
             var dto = new CreateReqUserDTO
             {
-                Id = 1,
                 Name = "John",
                 Age = 10
             };

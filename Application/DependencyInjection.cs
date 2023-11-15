@@ -17,7 +17,6 @@ namespace Application
         {
             services.AddAutoMapper(cfg =>
             {
-                // Add your AutoMapper profiles here
                 cfg.AddProfile<MapperProfiles>();
             });
             services.AddFluentValidationAutoValidation();

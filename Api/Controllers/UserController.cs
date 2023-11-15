@@ -56,7 +56,6 @@ namespace Api.Controllers
                .SetAbsoluteExpiration(TimeSpan.FromSeconds(60))
                .SetPriority(CacheItemPriority.Normal);
 
-                // Store the result in the cache with the configured options.
                 _memorycache.Set("AllUsers", node, cacheEntryOptions);
             }
             Response.ContentType = "application/json";

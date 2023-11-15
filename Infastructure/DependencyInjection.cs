@@ -11,13 +11,13 @@ namespace Infastructure
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddInfrastructure(IServiceCollection services)
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
             // Other services and configurations...
 
             // Register your DbContext (Entity Framework Core)
             services.AddDbContext<UsersDbContext>(options => options.UseSqlServer("Data Source=DESKTOP-O7KPC84\\MSSQLSERVER01;" +
-  "Initial Catalog=Users;"
+  "Initial Catalog=Users;" + "TrustServerCertificate=True;" + "Integrated Security=True;"
 ));
 
             // Register the database connection as a service

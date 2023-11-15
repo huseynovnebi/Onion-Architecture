@@ -73,7 +73,6 @@ namespace Api.Controllers
 
 
 
-            //Can be eperate method for toke validation
             if (existingToken is null)
             {
                 return BadRequest("RefreshToken is not true");
